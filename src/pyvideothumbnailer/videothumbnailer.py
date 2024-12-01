@@ -311,6 +311,7 @@ class VideoThumbnailer:
                                 '.flv',
                                 '.m4v',
                                 '.vob',
+                                '.VOB',
                                 '.iso',
                                 '.m2ts',
                                 '.ts',
