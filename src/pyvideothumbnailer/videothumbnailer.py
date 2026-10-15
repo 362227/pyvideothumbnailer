@@ -67,17 +67,40 @@ class Parameters:
     DEFAULT_COMMENT_LABEL = 'Comment:'
     DEFAULT_COMMENT_TEXT = None
     DEFAULT_SKIP_SECONDS = 10.0
-    DEFAULT_VIDEO_FILE_EXTENSIONS = {'.avi',
+    DEFAULT_VIDEO_FILE_EXTENSIONS = {'.3g2',
+                                     '.3gp',
+                                     '.asf',
+                                     '.avi',
                                      '.divx',
+                                     '.dv',
+                                     '.f4v',
                                      '.flv',
+                                     '.m2t',
+                                     '.m2ts',
+                                     '.m2v',
                                      '.m4v',
                                      '.mkv',
+                                     '.mod',
                                      '.mov',
                                      '.mp4',
+                                     '.mpe',
+                                     '.mpeg',
                                      '.mpg',
-                                     '.wmv',
                                      '.mts',
-                                     '.webm'}
+                                     '.mxf',
+                                     '.ogm',
+                                     '.ogv',
+                                     '.qt',
+                                     '.rm',
+                                     '.rmvb',
+                                     '.ts',
+                                     '.tp',
+                                     '.trp',
+                                     '.vob',
+                                     '.webm',
+                                     '.wmv',
+                                     '.wtv',
+                                     '.xvid'}
     DEFAULT_SUFFIX = None
     DEFAULT_JPEG_QUALITY = 95
     DEFAULT_OVERRIDE_EXISTING = False
