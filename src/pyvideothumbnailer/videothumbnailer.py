@@ -763,13 +763,35 @@ class VideoThumbnailer:
             video_rotation = int(float(video_metadata['rotation']))
             if self.parameters.verbose:
                 print('Video images are rotated by {}° according to metadata.'.format(video_rotation))
+
+        # Aspect ratio of the unrotated video as it is meant to be displayed.
+        # Videos with non-square pixels (e.g. DVD: 720x480 or 720x576 stored as 4:3 or 16:9)
+        # must not use the plain storage ratio width / height, but the display aspect ratio (DAR).
+        video_aspect = float(video_width) / float(video_height)
+        dar_value = video_metadata.get('display_aspect_ratio')
+        par_value = video_metadata.get('pixel_aspect_ratio')
+        aspect_source = 'storage (width / height)'
+        try:
+            if dar_value is not None and float(dar_value) > 0:
+                video_aspect = float(dar_value)
+                aspect_source = 'display_aspect_ratio'
+            elif par_value is not None and float(par_value) > 0:
+                video_aspect = video_aspect * float(par_value)
+                aspect_source = 'width / height * pixel_aspect_ratio'
+        except (ValueError, TypeError):
+            pass
+
         # Swap width and height if the video is rotated by 90° or 270°
         if video_rotation in (90, 270):
             temp = video_width
             video_width = video_height
             video_height = temp
-        # Aspect ratio
-        video_aspect = float(video_width) / float(video_height)
+            # The displayed aspect ratio of a rotated video is the inverse
+            video_aspect = 1.0 / video_aspect
+
+        if self.parameters.verbose:
+            print('Using aspect ratio {:.4f} derived from: {}'.format(video_aspect, aspect_source))
+
         # Frames per second (might be unavailable)
         fps = float(video_metadata.get('frame_rate', 0.0))
         # Duration in seconds
@@ -985,6 +1007,8 @@ class VideoThumbnailer:
                             # Counterrotate the image if the video is rotated by multiples of 90° according to metadata
                             if video_rotation in (90, 180, 270):
                                 image = image.rotate(-video_rotation, expand=True)
+                            # Resizing to the thumbnail size also stretches non-square-pixel
+                            # frames (e.g. DVD 720x480) to the correct display aspect ratio
                             image = image.resize((thumbnail_width, thumbnail_height))
                             thumbnails_image.paste(image, box=(x, y))
                             frame_captured = True
