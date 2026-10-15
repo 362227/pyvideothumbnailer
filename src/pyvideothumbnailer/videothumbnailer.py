@@ -78,6 +78,7 @@ class Parameters:
                                      '.m2t',
                                      '.m2ts',
                                      '.m2v',
+                                     '.m2p'
                                      '.m4v',
                                      '.mkv',
                                      '.mod',
